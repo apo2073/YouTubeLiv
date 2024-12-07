@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class YouTubeBuilder {
-    String API_KEY="AIzaSyBpMcjduOo5VbaWa-ptNGuGsG323gaop60";
+    String API_KEY="KEY";
     String VIDEO_ID;
     List<YouTubeEventListener> listeners=new ArrayList<>();
     long pollingInterval = 5000;

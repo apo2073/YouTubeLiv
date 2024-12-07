@@ -6,7 +6,8 @@ import kr.apo2073.listener.YouTubeEventListener;
 public class Main {
     public static void main(String[] args) {
         Youtube youtube=new YouTubeBuilder()
-                .setVIDEO_ID("CYhGhs0Ismk")
+                .setApiKey("API KEY")
+                .setVIDEO_ID("Video id")
                 .addListener(new YouTubeEventListener() {
                     @Override
                     public void onChat(Chatting chat) {

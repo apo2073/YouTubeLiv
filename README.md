@@ -21,6 +21,7 @@
 public class Main {
     public static void main(String[] args) {
         Youtube youtube=new YouTubeBuilder()
+                .setApiKey("API KEY") //https://console.cloud.google.com/apis/library/youtube.googleapis.com?inv=1&invt=AbjeZg&project=just-landing-330610
                 .setVIDEO_ID("Youtube video id") //https://www.youtube.com/watch?v=(here)
                 .addListener(new YouTubeEventListener() {
                     @Override
