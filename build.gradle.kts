@@ -1,6 +1,5 @@
 plugins {
     id("java")
-    `maven-publish`
 }
 
 group = "kr.apo2073"
@@ -26,31 +25,4 @@ tasks.jar {
 
 tasks.test {
     useJUnitPlatform()
-}
-
-publishing {
-    publications {
-        create<MavenPublication>("maven") {
-            groupId = "kr.apo2073"
-            artifactId = "library"
-            version = "1.0"
-
-            from(components["java"])
-
-            pom {
-                licenses {
-                    license {
-                        name="GNU GENERAL PUBLIC LICENSE"
-                        url="https://www.gnu.org/licenses/gpl-3.0.en.html#license-text"
-                    }
-                }
-                developers {
-                    developer {
-                        id="apo2073"
-                        url="https://github.com/apo2073"
-                    }
-                }
-            }
-        }
-    }
 }
