@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "com.github.apo2073"
-version = "1.0.1"
+version = "1.0.2"
 
 repositories {
     mavenCentral()
@@ -41,7 +41,7 @@ publishing {
         create<MavenPublication>("maven") {
             groupId = "com.github.apo2073"
             artifactId = "YoutubeLiv"
-            version = "1.0.1"
+            version = "1.0.2"
 
             from(components["java"])
 
