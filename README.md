@@ -1,12 +1,14 @@
 [![](https://jitpack.io/v/apo2073/YouTubeLiv.svg)](https://jitpack.io/#apo2073/YouTubeLiv)
 
+### __Better Easy YouTube Java Library__
+
+---
+
+## Dependency
 ```gradle
-	dependencyResolutionManagement {
-		repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-		repositories {
+	repositories {
 			mavenCentral()
 			maven { url 'https://jitpack.io' }
-		}
 	}
 	
 	dependencies {
@@ -21,7 +23,7 @@
 public class Main {
     public static void main(String[] args) {
         Youtube youtube=new YouTubeBuilder()
-                .setApiKey("API KEY") //https://console.cloud.google.com/apis/library/youtube.googleapis.com?inv=1&invt=AbjeZg&project=just-landing-330610
+                .setApiKey("API KEY") 
                 .setVIDEO_ID("Youtube video id") //https://www.youtube.com/watch?v=(here)
                 .addListener(new YouTubeEventListener() {
                     @Override
@@ -41,3 +43,6 @@ public class Main {
     }
 }
 ```
+---
+
+[Get Api Key](https://console.cloud.google.com/apis/library/youtube.googleapis.com?hl=ko&inv=1&invt=Abjeiw&project=just-landing-330610) 
