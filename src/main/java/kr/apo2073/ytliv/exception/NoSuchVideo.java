@@ -1,4 +1,4 @@
-package kr.apo2073.exception;
+package kr.apo2073.ytliv.exception;
 
 public class NoSuchVideo extends RuntimeException {
     public NoSuchVideo() {

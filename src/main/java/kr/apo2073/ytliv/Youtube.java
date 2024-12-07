@@ -1,16 +1,16 @@
 
-package kr.apo2073;
+package kr.apo2073.ytliv;
 
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.youtube.YouTube;
 import com.google.api.services.youtube.model.LiveChatMessage;
-import kr.apo2073.data.Chatting;
-import kr.apo2073.data.SuperChat;
-import kr.apo2073.data.SuperSticker;
-import kr.apo2073.enums.MessageType;
-import kr.apo2073.exception.NullLiveChatId;
-import kr.apo2073.listener.YouTubeEventListener;
+import kr.apo2073.ytliv.data.Chatting;
+import kr.apo2073.ytliv.data.SuperChat;
+import kr.apo2073.ytliv.data.SuperSticker;
+import kr.apo2073.ytliv.enums.MessageType;
+import kr.apo2073.ytliv.exception.NullLiveChatId;
+import kr.apo2073.ytliv.listener.YouTubeEventListener;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;

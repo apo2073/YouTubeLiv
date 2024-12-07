@@ -1,7 +1,7 @@
-package kr.apo2073;
+package kr.apo2073.ytliv;
 
-import kr.apo2073.exception.NullVideoID;
-import kr.apo2073.listener.YouTubeEventListener;
+import kr.apo2073.ytliv.exception.NullVideoID;
+import kr.apo2073.ytliv.listener.YouTubeEventListener;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;

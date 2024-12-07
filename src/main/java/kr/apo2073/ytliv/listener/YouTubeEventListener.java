@@ -1,8 +1,8 @@
-package kr.apo2073.listener;
+package kr.apo2073.ytliv.listener;
 
-import kr.apo2073.data.Chatting;
-import kr.apo2073.data.SuperChat;
-import kr.apo2073.data.SuperSticker;
+import kr.apo2073.ytliv.data.Chatting;
+import kr.apo2073.ytliv.data.SuperChat;
+import kr.apo2073.ytliv.data.SuperSticker;
 
 public interface YouTubeEventListener {
     default void onChat(Chatting chat) {}

@@ -1,4 +1,4 @@
-package kr.apo2073.enums;
+package kr.apo2073.ytliv.enums;
 
 public enum MessageType {
     TEXT_MESSAGE("textMessageEvent"),
