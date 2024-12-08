@@ -16,7 +16,7 @@ public class YouTubeBuilder {
     boolean isDebug=false;
 
     public YouTubeBuilder setApiKey(String key) {this.API_KEY=key;return this;}
-    public YouTubeBuilder setVIDEO_ID(String id) {this.VIDEO_ID =id; return this;}
+    public YouTubeBuilder setVideoId(String id) {this.VIDEO_ID =id; return this;}
     public YouTubeBuilder setDebug(boolean debug) {this.isDebug=debug; return this;}
     public YouTubeBuilder setPollingInterval(long interval) {this.pollingInterval=interval;return this;}
     public YouTubeBuilder addListener(YouTubeEventListener listener) {

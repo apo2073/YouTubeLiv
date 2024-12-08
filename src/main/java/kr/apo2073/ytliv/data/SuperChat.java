@@ -1,19 +1,22 @@
 package kr.apo2073.ytliv.data;
 
 import com.google.api.services.youtube.model.LiveChatMessage;
-import com.google.api.services.youtube.model.LiveChatMessageAuthorDetails;
 
 public class SuperChat {
+    private final String author;
     private final String amount;
     private final String message;
     private final String timestamp;
     private final LiveChatMessage liveChatMessage;
+    private final String videoId;
 
-    public SuperChat(String amount, String message, String timestamp, LiveChatMessage liveChatMessage) {
+    public SuperChat(String author, String amount, String message, String videoId, String timestamp, LiveChatMessage liveChatMessage) {
         this.amount = amount;
         this.message = message;
         this.timestamp = timestamp;
         this.liveChatMessage = liveChatMessage;
+        this.videoId=videoId;
+        this.author=author;
     }
     public String getAmount() {
         return amount;
@@ -27,7 +30,11 @@ public class SuperChat {
         return timestamp;
     }
 
-    public LiveChatMessageAuthorDetails author() {
-        return liveChatMessage.getAuthorDetails();
+    public String getVideoId() {
+        return videoId;
+    }
+
+    public Author author() {
+        return new Author(author, liveChatMessage);
     }
 }

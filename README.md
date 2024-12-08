@@ -5,15 +5,17 @@
 ---
 
 ## Dependency
+**gradle.kts**
 ```gradle
-	repositories {
-			mavenCentral()
-			maven { url 'https://jitpack.io' }
-	}
-	
-	dependencies {
-	        implementation 'com.github.apo2073:YouTubeLiv:Tag'
-	}
+repositories {
+    mavenCentral()
+    maven("https://jitpack.io") {
+        name = "jitpack"
+    }
+}	
+dependencies {
+    implementation("com.github.apo2073:YouTubeLiv:Tag")
+}
 ```
 
 ---
@@ -24,7 +26,7 @@ public class Main {
     public static void main(String[] args) {
         Youtube youtube = new YouTubeBuilder()
                 .setApiKey("API-KEY")
-                .setVIDEO_ID("Live-Video-Id") //https://www.youtube.com/watch?v=(here)
+                .setVideoId("Live-Video-Id") //https://www.youtube.com/watch?v=(here)
                 .addListener(new YouTubeEventListener() {
                     @Override
                     public void onChat(Chatting chat) {
@@ -32,7 +34,7 @@ public class Main {
                     }
                 }).build();
         
-        Youtube.YouTubeInfo info = youtube.channelInfo();
+        YouTubeInfo info = youtube.channelInfo();
         System.out.println(info.getChannelName()); // Get Channel Name
         System.out.println(info.getSubscriptionCount()); // Get Channel Subscription Count
         try {
@@ -41,8 +43,7 @@ public class Main {
             throw new RuntimeException(e);
         }
 
-        youtube.stop();
-        System.out.println("Stopped");
+        youtube.stop(); // Stop
     }
 }
 ```

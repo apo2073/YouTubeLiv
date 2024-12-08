@@ -39,7 +39,7 @@ public class Youtube {
                 GoogleNetHttpTransport.newTrustedTransport(),
                 JacksonFactory.getDefaultInstance(),
                 null
-        ).build();
+        ).setApplicationName("YouTubeLiv") .build();
 
         validateApiKey();
 
@@ -119,10 +119,14 @@ public class Youtube {
     }
 
     private void processMessage(LiveChatMessage message) {
+        if (!isRunning) return;
+
         if (message.getSnippet().getType().equals(MessageType.SUPER_CHAT_MESSAGE.getType())) {
             SuperChat superChat = new SuperChat(
+                    message.getAuthorDetails().getDisplayName(),
                     message.getSnippet().getSuperChatDetails().getAmountDisplayString(),
                     message.getSnippet().getSuperChatDetails().getUserComment(),
+                    videoID,
                     message.getSnippet().getPublishedAt().toString(),
                     message
             );
@@ -131,8 +135,10 @@ public class Youtube {
             }
         } else if (message.getSnippet().getType().equals(MessageType.SUPER_STICKER_MESSAGE.getType())) {
             SuperSticker superSticker = new SuperSticker(
+                    message.getAuthorDetails().getDisplayName(),
                     message.getSnippet().getSuperStickerDetails().getAmountDisplayString(),
                     message.getSnippet().getSuperStickerDetails().getSuperStickerMetadata().getStickerId(),
+                    videoID,
                     message.getSnippet().getPublishedAt().toString(),
                     message
             );
@@ -142,7 +148,7 @@ public class Youtube {
         } else if (message.getSnippet().getType().equals(MessageType.TEXT_MESSAGE.getType())) {
             String contents = message.getSnippet().getDisplayMessage();
             for (YouTubeEventListener listener : listeners) {
-                listener.onChat(new Chatting(contents, message));
+                listener.onChat(new Chatting(message.getAuthorDetails().getDisplayName(), contents, videoID, message));
             }
         }
     }
@@ -154,59 +160,6 @@ public class Youtube {
     }
 
     public YouTubeInfo channelInfo() {
-        return new YouTubeInfo(youtube);
-    }
-
-    public class YouTubeInfo {
-        private String channelName;
-        private String channelSubscriptionCount;
-        private final YouTube youTube;
-        private final Channel channel;
-
-        public YouTubeInfo(YouTube youTube) {
-            this.youTube = youTube;
-            Channel tempChannel = null;
-            String tempName = null;
-            String tempCount = null;
-
-            try {
-                tempChannel = getChannel();
-                if (tempChannel != null) {
-                    tempName = tempChannel.getSnippet().getTitle();
-                    tempCount = tempChannel.getStatistics().getSubscriberCount().toString();
-                }
-            } catch (IOException e) {
-                processError(e);
-            }
-
-            this.channel = tempChannel;
-            this.channelName = tempName;
-            this.channelSubscriptionCount = tempCount;
-        }
-
-        public Channel getChannel() throws IOException {
-            YouTube.Videos.List videoRequest = youTube.videos()
-                    .list(List.of("snippet")).setKey(api).setId(List.of(videoID));
-
-            var videoResponse = videoRequest.execute();
-            if (videoResponse.getItems() == null || videoResponse.getItems().isEmpty()) return null;
-            String channelId = videoResponse.getItems().get(0).getSnippet().getChannelId();
-
-            YouTube.Channels.List channelRequest = youTube.channels()
-                    .list(List.of("snippet", "statistics")).setKey(api).setId(List.of(channelId));
-
-            var channelResponse = channelRequest.execute();
-            if (channelResponse.getItems() == null || channelResponse.getItems().isEmpty()) return null;
-
-            return channelResponse.getItems().get(0);
-        }
-
-        public String getChannelName() {
-            return channelName;
-        }
-
-        public String getSubscriptionCount() {
-            return channelSubscriptionCount;
-        }
+        return YouTubeInfo.from(videoID, api);
     }
 }
