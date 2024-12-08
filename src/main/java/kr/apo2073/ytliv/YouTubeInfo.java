@@ -4,6 +4,7 @@ import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.youtube.YouTube;
 import com.google.api.services.youtube.model.Channel;
+import kr.apo2073.ytliv.utilities.Debugger;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
@@ -14,6 +15,7 @@ public class YouTubeInfo {
     private final String channelSubscriptionCount;
     private final Channel channel;
     private static String API_KEY;
+    private final Debugger debugger=new Debugger();
 
     public static YouTubeInfo from(String videoId, String api) {
         try {
@@ -37,6 +39,8 @@ public class YouTubeInfo {
         String tempCount = null;
 
         try {
+            debugger.log("channel info called: "+ (getChannel(youtube, videoId)!=null  ? getChannel(youtube, videoId).getSnippet().getTitle() : "UNKNOWN"));
+
             tempChannel = getChannel(youtube, videoId);
             if (tempChannel != null) {
                 tempName = tempChannel.getSnippet().getTitle();

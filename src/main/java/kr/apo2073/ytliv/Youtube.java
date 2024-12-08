@@ -14,6 +14,7 @@ import kr.apo2073.ytliv.enums.MessageType;
 import kr.apo2073.ytliv.exception.InvalidApiKeyException;
 import kr.apo2073.ytliv.exception.NullLiveChatId;
 import kr.apo2073.ytliv.listener.YouTubeEventListener;
+import kr.apo2073.ytliv.utilities.Debugger;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
@@ -25,6 +26,9 @@ public class Youtube {
     private final List<YouTubeEventListener> listeners;
     private final long pollingInterval;
     private final boolean isDebug;
+    private int chat_length=0;
+    private String lastMessageTimestamp;
+    private Debugger debugger=new Debugger();
     private final YouTube youtube;
     private boolean isRunning = false;
     private Thread chatThread;
@@ -35,11 +39,13 @@ public class Youtube {
         this.listeners = builder.listeners;
         this.isDebug = builder.isDebug;
         this.pollingInterval = builder.pollingInterval;
+        this.chat_length = builder.chat_length;
         this.youtube = new YouTube.Builder(
                 GoogleNetHttpTransport.newTrustedTransport(),
                 JacksonFactory.getDefaultInstance(),
                 null
         ).setApplicationName("YouTubeLiv") .build();
+        debugger.log("new youtube listener created");
 
         validateApiKey();
 
@@ -47,17 +53,21 @@ public class Youtube {
         isRunning = true;
         chatThread = new Thread(this::runChat);
         chatThread.start();
+        debugger.log("new youtube listener started");
     }
 
     private void validateApiKey() throws IOException {
+        debugger.log("validate API key");
         try {
             YouTube.Videos.List request = youtube.videos()
                     .list(List.of("snippet"))
                     .setKey(api)
                     .setId(List.of("dQw4w9WgXcQ"));
             request.execute();
+            debugger.log("validate successes");
         } catch (GoogleJsonResponseException e) {
             if (e.getStatusCode() == 400 || e.getStatusCode() == 403) {
+                debugger.log("validate fail");
                 throw new InvalidApiKeyException();
             }
             throw e;
@@ -73,6 +83,7 @@ public class Youtube {
     }
 
     public void stop() {
+        debugger.log("youtube listener stopped");
         isRunning = false;
         if (chatThread == null) return;
         chatThread.interrupt();
@@ -85,7 +96,9 @@ public class Youtube {
                 throw new NullLiveChatId();
             }
 
+            lastMessageTimestamp = java.time.Instant.now().toString();
             String pageToken = null;
+
             while (isRunning) {
                 try {
                     YouTube.LiveChatMessages.List liveChatRequest = youtube.liveChatMessages()
@@ -94,7 +107,8 @@ public class Youtube {
                     var liveChatResponse = liveChatRequest.execute();
 
                     for (LiveChatMessage message : liveChatResponse.getItems()) {
-                        processMessage(message);
+                        if (message.getSnippet().getPublishedAt().toString().compareTo(lastMessageTimestamp)>chat_length)
+                            processMessage(message);
                     }
                     pageToken = liveChatResponse.getNextPageToken();
                     Thread.sleep(liveChatResponse.getPollingIntervalMillis());
@@ -122,6 +136,7 @@ public class Youtube {
         if (!isRunning) return;
 
         if (message.getSnippet().getType().equals(MessageType.SUPER_CHAT_MESSAGE.getType())) {
+            debugger.log("new super chat process");
             SuperChat superChat = new SuperChat(
                     message.getAuthorDetails().getDisplayName(),
                     message.getSnippet().getSuperChatDetails().getAmountDisplayString(),
@@ -134,6 +149,7 @@ public class Youtube {
                 listener.onSuperChat(superChat);
             }
         } else if (message.getSnippet().getType().equals(MessageType.SUPER_STICKER_MESSAGE.getType())) {
+            debugger.log("new super sticker process");
             SuperSticker superSticker = new SuperSticker(
                     message.getAuthorDetails().getDisplayName(),
                     message.getSnippet().getSuperStickerDetails().getAmountDisplayString(),
@@ -146,6 +162,7 @@ public class Youtube {
                 listener.onSuperSticker(superSticker);
             }
         } else if (message.getSnippet().getType().equals(MessageType.TEXT_MESSAGE.getType())) {
+            debugger.log("new message process");
             String contents = message.getSnippet().getDisplayMessage();
             for (YouTubeEventListener listener : listeners) {
                 listener.onChat(new Chatting(message.getAuthorDetails().getDisplayName(), contents, videoID, message));
@@ -154,6 +171,7 @@ public class Youtube {
     }
 
     private void processError(Exception e) {
+        debugger.log("process error");
         for (YouTubeEventListener listener : listeners) {
             listener.onError(e);
         }

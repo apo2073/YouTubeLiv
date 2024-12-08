@@ -7,8 +7,8 @@ import kr.apo2073.ytliv.listener.YouTubeEventListener;
 public class Main {
     public static void main(String[] args) {
         Youtube youtube = new YouTubeBuilder()
-                .setApiKey("API-KEY")
-                .setVideoId("VIDEO-ID")
+                .setApiKey("AIzaSyBpMcjduOo5VbaWa-ptNGuGsG323gaop60")
+                .setVideoId("CYhGhs0Ismk")
                 .addListener(new YouTubeEventListener() {
                     @Override
                     public void onChat(Chatting chat) {
