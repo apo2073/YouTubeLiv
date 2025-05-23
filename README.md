@@ -1,6 +1,6 @@
 [![](https://jitpack.io/v/apo2073/YouTubeLiv.svg)](https://jitpack.io/#apo2073/YouTubeLiv)
 
-### __Better Easy YouTube Java Library__
+### __Better Easy YouTube Java API__
 
 ---
 
